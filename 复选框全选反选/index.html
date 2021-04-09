@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复选框全选反选</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    #container {
+      width: 168px;
+      background-color: #f1f1f1;
+      margin: 30px auto;
+      border: 1px solid #000;
+      border-radius: 5px;
+      padding: 18px 20px;
+    }
+
+    dt {
+      position: relative;
+      border-bottom: 1px solid #000;
+      padding-bottom: 10px;
+    }
+
+    #checkReverse {
+      border: none;
+      position: absolute;
+      right: 0;
+      font-size: 16px;
+      outline: none;
+      color: blue;
+      cursor: pointer;
+    }
+
+    p {
+      margin: 10px 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <dl id="container">
+    <dt>
+      <input type="checkbox" name="" id="checkAll"><label for="checkAll"> 全(不)选</label>
+      <input type="button" value="反选" id="checkReverse">
+    </dt>
+    <dd>
+      <p><input type="checkbox" name="course" id="html"><label for="html"> HTML</label></p>
+      <p><input type="checkbox" name="course" id="css"><label for="css"> CSS</label></p>
+      <p><input type="checkbox" name="course" id="js"><label for="js"> JavaScript</label></p>
+      <p><input type="checkbox" name="course" id="ts"><label for="ts"> TypeScript</label></p>
+      <p><input type="checkbox" name="course" id="jquery"><label for="jquery"> jQuery</label></p>
+      <p><input type="checkbox" name="course" id="nodejs"><label for="nodejs"> NodeJS</label></p>
+      <p><input type="checkbox" name="course" id="webpack"><label for="webpack"> webpack</label></p>
+      <p><input type="checkbox" name="course" id="git"><label for="git"> Git</label></p>
+      <p><input type="checkbox" name="course" id="vue"><label for="vue"> Vue</label></p>
+      <p><input type="checkbox" name="course" id="react"><label for="react"> React</label></p>
+      <p><input type="checkbox" name="course" id="angular"><label for="angular"> Angular</label></p>
+    </dd>
+  </dl>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+  <script>
+    $(function () {
+      let checkAll = $('#checkAll')
+      let checkReverse = $('#checkReverse')
+      let course = $('input[name="course"]')
+      let flag = false
+
+      // 全选/全不选：
+      $('#checkAll').click(function () {
+        if (flag === false) {
+          flag = true
+          course.each(function (index, elem) {
+            $(this).prop('checked', true)
+          })
+        } else {
+          flag = false
+          course.each(function (index, elem) {
+            $(this).prop('checked', false)
+          })
+        }
+      })
+
+      // 判断是否全选并处理：
+      course.each(function (index, elem) {
+        $(this).click(function () {
+          let isTrue = Array.prototype.some.call(course, function (elem) {
+            return $(elem).prop('checked') === false
+          })
+          if (isTrue) {
+            flag = false
+            $('#checkAll').prop('checked', false)
+          } else {
+            flag = true
+            $('#checkAll').prop('checked', true)
+          }
+        })
+      })
+
+      // 反选：
+      checkReverse.click(function () {
+        if (checkAll.prop('checked') === true) {
+          checkAll.prop('checked', !checkAll.prop('checked'))
+        } else {
+          let isTrue = Array.prototype.some.call(course, function (elem) {
+            return $(elem).prop('checked') === true
+          })
+          if (isTrue === false) {
+            checkAll.prop('checked', !checkAll.prop('checked'))
+          }
+        }
+        course.each(function (index, elem) {
+          $(this).prop('checked', !$(this).prop('checked'))
+        })
+      })
+    })
+  </script>
+</body>
+
+</html>
